@@ -1,7 +1,11 @@
 {
   "name": "date-me-api",
   "scripts": {
-    "dev": "bun run --hot src/index.ts"
+    "dev": "bun run --hot src/index.ts",
+    "lint": "bunx eslint src test",
+    "lint:fix": "bun run lint -- --fix",
+    "prettier": "bun prettier src test --check",
+    "prettier:fix": "bun run prettier -- --write"
   },
   "dependencies": {
     "hono": "^4.6.12"
