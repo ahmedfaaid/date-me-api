@@ -1,6 +1,7 @@
 import app from '@/app';
+import env from '@/lib/env';
 
 export default {
-  port: Number(process.env.PORT || 5555),
+  port: Number(env.PORT),
   fetch: app.fetch
 };

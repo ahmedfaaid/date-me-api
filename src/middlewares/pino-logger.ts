@@ -1,10 +1,11 @@
+import env from '@/lib/env';
 import { pinoLogger as logger } from 'hono-pino';
 import pino from 'pino';
 
 function pinoLogger() {
   return logger({
     pino:
-      process.env.NODE_ENV === 'production'
+      env.NODE_ENV === 'production'
         ? undefined
         : pino({
             transport: {
@@ -13,7 +14,7 @@ function pinoLogger() {
                 colorize: true
               }
             },
-            level: process.env.LOG_LEVEL || 'info'
+            level: env.LOG_LEVEL || 'info'
           }),
     http: {
       reqId: () => crypto.randomUUID()
