@@ -5,7 +5,9 @@ import { AppBindings } from '@/types';
 import { OpenAPIHono } from '@hono/zod-openapi';
 
 export default function createApp() {
-  const app = new OpenAPIHono<AppBindings>();
+  const app = new OpenAPIHono<AppBindings>({
+    strict: false
+  });
 
   app.notFound(notFound);
   app.onError(onError);
