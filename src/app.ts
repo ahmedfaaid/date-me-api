@@ -3,6 +3,7 @@ import notFound from './middlewares/not-found';
 import onError from './middlewares/on-error';
 import pinoLogger from '@/middlewares/pino-logger';
 import { PinoLogger } from 'hono-pino';
+import serveFavicon from './middlewares/serveFavicon';
 
 type AppBindings = {
   Variables: {
@@ -14,6 +15,7 @@ const app = new OpenAPIHono<AppBindings>();
 
 app.notFound(notFound);
 app.onError(onError);
+app.use(serveFavicon('⍧'));
 app.use(pinoLogger());
 
 app.get('/error', (c) => {
