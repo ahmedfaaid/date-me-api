@@ -12,7 +12,8 @@ function pinoLogger() {
               options: {
                 colorize: true
               }
-            }
+            },
+            level: process.env.LOG_LEVEL || 'info'
           }),
     http: {
       reqId: () => crypto.randomUUID()
