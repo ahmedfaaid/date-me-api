@@ -1,5 +1,6 @@
 {
   "name": "date-me-api",
+  "version": "0.0.1",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "lint": "bunx eslint src",

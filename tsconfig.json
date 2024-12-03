@@ -5,6 +5,8 @@
     "jsxImportSource": "hono/jsx",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }
