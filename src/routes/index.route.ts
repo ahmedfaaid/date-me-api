@@ -1,5 +1,6 @@
 import { createRouter } from '@/lib/create-app';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
+import jsonContent from '@/lib/json-content';
 import { createRoute, z } from '@hono/zod-openapi';
 
 const router = createRouter()
@@ -8,16 +9,9 @@ const router = createRouter()
     method: 'get',
     path: '/',
     responses: {
-      [HttpStatusCodes.OK]: {
-        description: 'Date me index',
-        content: {
-          'application/json': {
-            schema: z.object({
-              message: z.string()
-            })
-          }
-        }
-      }
+      [HttpStatusCodes.OK]: jsonContent(z.object({
+        message: z.string()
+      }), 'Date me index')
     }
   }),
     (c) => {
