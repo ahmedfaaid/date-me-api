@@ -1,4 +1,4 @@
-import { OpenAPIHono } from '@hono/zod-openapi';
+import { OpenAPIHono, z } from '@hono/zod-openapi';
 import { PinoLogger } from 'hono-pino';
 
 export type AppBindings = {
@@ -8,3 +8,5 @@ export type AppBindings = {
 };
 
 export type AppOpenApi = OpenAPIHono<AppBindings>;
+
+export type ZodSchema = z.ZodUnion<any> | z.AnyZodObject | z.ZodArray<z.AnyZodObject>;
