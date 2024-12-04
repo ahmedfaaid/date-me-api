@@ -3,10 +3,12 @@ import onError from '@/middlewares/on-error';
 import pinoLogger from '@/middlewares/pino-logger';
 import { AppBindings } from '@/types';
 import { OpenAPIHono } from '@hono/zod-openapi';
+import defaultHook from './default-hook';
 
 export function createRouter() {
   return new OpenAPIHono<AppBindings>({
-    strict: false
+    strict: false,
+    defaultHook
   });
 }
 
@@ -22,7 +24,7 @@ export default function createApp() {
     c.var.logger.info('Some logs here');
     throw new Error("Man something ain't right");
   });
-  
+
   app.get('/', (c) => {
     return c.json({
       message: 'Hello from Date ME'
