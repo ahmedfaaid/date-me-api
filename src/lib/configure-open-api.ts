@@ -1,5 +1,6 @@
 import { AppOpenApi } from '@/types';
 import packageJSON from '../../package.json';
+import { apiReference } from '@scalar/hono-api-reference';
 
 export default function configureOpenApi(app: AppOpenApi) {
   app.doc('/doc', {
@@ -8,5 +9,18 @@ export default function configureOpenApi(app: AppOpenApi) {
       title: 'Date Me API',
       version: packageJSON.version
     }
-  })
-}
+  });
+
+  app.get('/reference',
+    apiReference({
+      theme: 'elysiajs',
+      defaultHttpClient: {
+        targetKey: 'javascript',
+        clientKey: 'fetch'
+      },
+      spec: {
+        url: '/doc'
+      }
+    })
+  );
+};
