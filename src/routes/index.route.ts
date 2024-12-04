@@ -1,4 +1,5 @@
 import { createRouter } from '@/lib/create-app';
+import * as HttpStatusCodes from '@/lib/http-status-codes';
 import { createRoute, z } from '@hono/zod-openapi';
 
 const router = createRouter()
@@ -6,7 +7,7 @@ const router = createRouter()
     method: 'get',
     path: '/',
     responses: {
-      200: {
+      [HttpStatusCodes.OK]: {
         description: 'Date me index',
         content: {
           'application/json': {
@@ -15,12 +16,12 @@ const router = createRouter()
             })
           }
         }
-      } 
+      }
     }
   }),
-  (c) => {
-    return c.json({ message: 'Hello from Date ME' });
-  }
-);
+    (c) => {
+      return c.json({ message: 'Hello from Date ME' }, HttpStatusCodes.OK);
+    }
+  );
 
 export default router;
