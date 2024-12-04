@@ -1,11 +1,13 @@
 import createApp from '@/lib/create-app';
-import configureOpenApi from './lib/configure-open-api';
 import index from '@/routes/index.route';
+import user from '@/routes/user/user.index';
+import configureOpenApi from './lib/configure-open-api';
 
 const app = createApp();
 
 const routes = [
-  index
+  index,
+  user
 ];
 
 configureOpenApi(app);
