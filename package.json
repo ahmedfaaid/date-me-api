@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@hono/zod-openapi": "^0.18.3",
+    "@libsql/client": "^0.14.0",
     "@scalar/hono-api-reference": "^0.5.162",
+    "drizzle-orm": "^0.37.0",
     "hono": "^4.6.12",
     "hono-pino": "^0.7.0",
     "pino": "^9.5.0",
@@ -22,11 +24,13 @@
     "@eslint/js": "^9.16.0",
     "@types/bun": "latest",
     "@types/validator": "^13.12.2",
+    "drizzle-kit": "^0.29.1",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.13.0",
     "prettier": "^3.4.1",
+    "tsx": "^4.19.2",
     "typescript-eslint": "^8.16.0"
   },
   "module": "index.ts",
