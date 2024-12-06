@@ -12,7 +12,8 @@ export const users = createRoute({
       z.array(z.object({
         name: z.string(),
         phone: z.string().refine(validator.isMobilePhone),
-        email: z.string().email()
+        email: z.string().email(),
+        password: z.string().min(6)
       })),
       'List of users'
     )
