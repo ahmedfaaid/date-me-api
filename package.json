@@ -6,7 +6,9 @@
     "lint": "bunx eslint src",
     "lint:fix": "bun run lint -- --fix",
     "prettier": "bun prettier src test --check",
-    "prettier:fix": "bun run prettier -- --write"
+    "prettier:fix": "bun run prettier -- --write",
+    "gen:migrations": "bun drizzle-kit generate",
+    "push:migrations": "bun drizzle-kit push"
   },
   "dependencies": {
     "@hono/zod-openapi": "^0.18.3",
