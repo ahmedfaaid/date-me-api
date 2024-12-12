@@ -1,3 +1,4 @@
+import env from '@/lib/env';
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
@@ -14,7 +15,9 @@ export const users = sqliteTable('users', {
   updatedAt: integer('updated_at', { mode: 'timestamp' }).default(defaultNow).$onUpdate(() => new Date()).notNull()
 });
 
-export const selectUsersSchema = createSelectSchema(users);
+export const selectUsersSchema = createSelectSchema(users).omit({
+  password: env.NODE_ENV === 'production' ? true : undefined
+});
 export const insertUsersSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
