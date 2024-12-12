@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createSelectSchema } from 'drizzle-zod';
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 
 const defaultNow = sql`(cast((julianday('now') - 2440587.5)*86400000 as integer))`
 
@@ -15,3 +15,8 @@ export const users = sqliteTable('users', {
 });
 
 export const selectUsersSchema = createSelectSchema(users);
+export const insertUsersSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true
+});
