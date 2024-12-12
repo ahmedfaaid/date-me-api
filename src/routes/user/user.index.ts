@@ -3,6 +3,7 @@ import * as handlers from '@/routes/user/user.handler';
 import * as routes from '@/routes/user/user.route';
 
 const router = createRouter()
-  .openapi(routes.users, handlers.users);
+  .openapi(routes.users, handlers.users)
+  .openapi(routes.createUser, handlers.createUser);
 
 export default router;
