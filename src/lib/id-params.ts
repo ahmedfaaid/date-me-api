@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from '@hono/zod-openapi';
 
 const IdParamsSchema = z.object({
   id: z.coerce.number().openapi({
