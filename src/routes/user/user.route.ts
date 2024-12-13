@@ -1,4 +1,5 @@
 import { insertUsersSchema, selectUsersSchema } from '@/db/schema';
+import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import IdParamsSchema from '@/lib/id-params';
@@ -54,11 +55,7 @@ export const getOneUser = createRoute({
       'Invalid id error'
     ),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      z.object({
-        message: z.string()
-      }).openapi({
-        example: { message: 'User not found' }
-      }),
+      notFoundSchema,
       'User not found'
     )
   }
