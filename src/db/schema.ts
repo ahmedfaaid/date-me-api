@@ -2,6 +2,7 @@ import env from '@/lib/env';
 import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import validator from 'validator';
 
 const defaultNow = sql`(cast((julianday('now') - 2440587.5)*86400000 as integer))`
 
@@ -18,7 +19,11 @@ export const users = sqliteTable('users', {
 export const selectUsersSchema = createSelectSchema(users).omit({
   password: env.NODE_ENV === 'production' ? true : undefined
 });
-export const insertUsersSchema = createInsertSchema(users).omit({
+export const insertUsersSchema = createInsertSchema(users, {
+  name: (schema) => schema.min(2),
+  email: (schema) => schema.email(),
+  phone: (schema) => schema.refine(validator.isMobilePhone)
+}).omit({
   id: true,
   createdAt: true,
   updatedAt: true
