@@ -1,6 +1,7 @@
 import db from '@/db';
 import { users as usersSchema } from '@/db/schema';
 import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
+import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import { CreateUserRoute, GetOneUserRoute, UsersRoute } from '@/routes/user/user.route';
 import { AppRouteHandler } from '@/types';
 import { password } from 'bun';
@@ -26,7 +27,7 @@ export const getOneUser: AppRouteHandler<GetOneUserRoute> = async (c) => {
   });
 
   if (!user) return c.json({
-    message: 'User not found'
+    message: NOT_FOUND_PHRASE
   }, NOT_FOUND)
 
   return c.json(user, OK)
