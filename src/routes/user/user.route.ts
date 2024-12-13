@@ -1,4 +1,5 @@
 import { insertUsersSchema, selectUsersSchema } from '@/db/schema';
+import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import jsonContent from '@/lib/json-content';
 import jsonContentRequired from '@/lib/json-content-required';
@@ -27,6 +28,10 @@ export const createUser = createRoute({
     [HttpStatusCodes.CREATED]: jsonContent(
       selectUsersSchema,
       'The created user'
+    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(insertUsersSchema),
+      'The validation error(s)'
     )
   }
 });
