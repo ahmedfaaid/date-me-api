@@ -58,3 +58,4 @@ export const getOneUser = createRoute({
 
 export type UsersRoute = typeof users;
 export type CreateUserRoute = typeof createUser;
+export type GetOneUserRoute = typeof getOneUser;
