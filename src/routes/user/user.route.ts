@@ -52,6 +52,14 @@ export const getOneUser = createRoute({
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(IdParamsSchema),
       'Invalid id error'
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      z.object({
+        message: z.string()
+      }).openapi({
+        example: { message: 'User not found' }
+      }),
+      'User not found'
     )
   }
 });
