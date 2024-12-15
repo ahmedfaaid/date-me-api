@@ -61,4 +61,14 @@ describe('users routes', () => {
       expect(json.email).toBe(email);
     }
   });
+
+  it('get /users lists all users', async () => {
+    const response = await client.users.$get();
+    expect(response.status).toBe(200);
+    if (response.status === 200) {
+      const json = await response.json();
+      expect(json).toBeArray();
+      expect(json.length).toBe(1);
+    }
+  });
 });
