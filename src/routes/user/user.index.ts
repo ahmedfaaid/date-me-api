@@ -5,6 +5,7 @@ import * as routes from '@/routes/user/user.route';
 const router = createRouter()
   .openapi(routes.users, handlers.users)
   .openapi(routes.createUser, handlers.createUser)
-  .openapi(routes.getOneUser, handlers.getOneUser);
+  .openapi(routes.getOneUser, handlers.getOneUser)
+  .openapi(routes.updateUser, handlers.updateUser);
 
 export default router;
