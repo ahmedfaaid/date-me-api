@@ -22,13 +22,18 @@ describe('users routes', () => {
     fs.rmSync('test.db', { force: true });
   });
 
+  const name = 'Albus';
+  const phone = '0244555555';
+  const email = 'albus@hogwarts.com';
+  const password = 'brackium_emendo';
+
   it('post /users validates the body when creating a user', async () => {
     const response = await client.users.$post({
       // @ts-expect-error
       json: {
-        name: "Albus",
-        phone: "0244555555",
-        email: "albus@hogwarts.com",
+        name,
+        phone,
+        email,
       }
     });
     expect(response.status).toBe(422);
