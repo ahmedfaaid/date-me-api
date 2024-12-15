@@ -2,9 +2,10 @@ import db from '@/db';
 import { users as usersSchema } from '@/db/schema';
 import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
-import { CreateUserRoute, GetOneUserRoute, UsersRoute } from '@/routes/user/user.route';
+import { CreateUserRoute, GetOneUserRoute, UpdateUserRoute, UsersRoute } from '@/routes/user/user.route';
 import { AppRouteHandler } from '@/types';
 import { password } from 'bun';
+import { eq } from 'drizzle-orm';
 
 export const users: AppRouteHandler<UsersRoute> = async (c) => {
   const users = await db.query.users.findMany();
@@ -25,6 +26,21 @@ export const getOneUser: AppRouteHandler<GetOneUserRoute> = async (c) => {
       return operators.eq(fields.id, id)
     }
   });
+
+  if (!user) return c.json({
+    message: NOT_FOUND_PHRASE
+  }, NOT_FOUND)
+
+  return c.json(user, OK)
+}
+
+export const updateUser: AppRouteHandler<UpdateUserRoute> = async (c) => {
+  const { id } = c.req.valid('param');
+  const updates = c.req.valid('json');
+  const [user] = await db.update(usersSchema)
+    .set(updates)
+    .where(eq(usersSchema.id, id))
+    .returning();
 
   if (!user) return c.json({
     message: NOT_FOUND_PHRASE
