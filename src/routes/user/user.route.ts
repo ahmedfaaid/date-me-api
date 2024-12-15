@@ -87,7 +87,30 @@ export const updateUser = createRoute({
   }
 });
 
+export const deleteUser = createRoute({
+  tags: ['users'],
+  method: 'delete',
+  path: '/users/{id}',
+  request: {
+    params: IdParamsSchema
+  },
+  responses: {
+    [HttpStatusCodes.NO_CONTENT]: {
+      description: 'User deleted successfully'
+    },
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(IdParamsSchema),
+      'Invalid id error'
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      notFoundSchema,
+      'User not found'
+    )
+  }
+});
+
 export type UsersRoute = typeof users;
 export type CreateUserRoute = typeof createUser;
 export type GetOneUserRoute = typeof getOneUser;
 export type UpdateUserRoute = typeof updateUser;
+export type DeleteUserRoute = typeof deleteUser;
