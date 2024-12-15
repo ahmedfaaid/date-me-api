@@ -3,7 +3,7 @@ import { z, ZodError } from 'zod';
 const EnvSchema = z.object({
   NODE_ENV: z.string().default('development'),
   PORT: z.coerce.number().default(5555),
-  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']),
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']),
   DATABASE_URL: z.string().url(),
   DATABASE_AUTH_TOKEN: z.string().optional(),
 }).superRefine((input, ctx) => {
