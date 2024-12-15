@@ -43,4 +43,22 @@ describe('users routes', () => {
       expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.REQUIRED);
     }
   });
+
+  it('post /users creates a new user', async () => {
+    const response = await client.users.$post({
+      json: {
+        name,
+        phone,
+        email,
+        password
+      }
+    });
+    expect(response.status).toBe(201);
+    if (response.status === 201) {
+      const json = await response.json();
+      expect(json.name).toBe(name);
+      expect(json.phone).toBe(phone);
+      expect(json.email).toBe(email);
+    }
+  });
 });
