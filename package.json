@@ -8,7 +8,8 @@
     "prettier": "bun prettier src test --check",
     "prettier:fix": "bun run prettier -- --write",
     "gen:migrations": "bun drizzle-kit generate",
-    "push:migrations": "bun drizzle-kit push"
+    "push:migrations": "bun drizzle-kit push",
+    "test": "vitest"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.3.0",
