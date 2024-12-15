@@ -1,7 +1,7 @@
 import notFound from '@/middlewares/not-found';
 import onError from '@/middlewares/on-error';
 import pinoLogger from '@/middlewares/pino-logger';
-import { AppBindings } from '@/types';
+import { AppBindings, AppOpenApi } from '@/types';
 import { OpenAPIHono } from '@hono/zod-openapi';
 import defaultHook from './default-hook';
 
@@ -32,4 +32,10 @@ export default function createApp() {
   });
 
   return app;
+}
+
+export function createTestApp(router: AppOpenApi) {
+  const testApp = createApp();
+  testApp.route('/', router);
+  return testApp;
 }
