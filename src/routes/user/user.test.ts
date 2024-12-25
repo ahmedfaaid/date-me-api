@@ -71,4 +71,19 @@ describe('users routes', () => {
       expect(json.length).toBe(1);
     }
   });
+
+  it('get /users/{id} validtes the id param', async () => {
+    const response = await client.users[':id'].$get({
+      param: {
+        // @ts-expect-error
+        id: 'invalid'
+      }
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].path[0]).toBe('id');
+      expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.EXPECTED_NUMBER);
+    }
+  });
 });
