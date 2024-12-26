@@ -1,7 +1,7 @@
-import { INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from '@/lib/http-status-codes';
-import { StatusCode } from 'hono/utils/http-status';
-import type { ErrorHandler } from 'hono';
 import env from '@/lib/env';
+import { INTERNAL_SERVER_ERROR, OK } from '@/lib/http-status-codes';
+import type { ErrorHandler } from 'hono';
+import { StatusCode } from 'hono/utils/http-status';
 
 const onError: ErrorHandler = (error, c) => {
   const currentStatus =

@@ -9,7 +9,7 @@ const IdParamsSchema = z.object({
     },
     required: ['id'],
     example: 321
-  }),
+  })
 });
 
 export default IdParamsSchema;

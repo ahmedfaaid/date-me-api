@@ -1,21 +1,20 @@
-import type { ZodSchema } from "@/types";
+import type { ZodSchema } from '@/types';
 
-import oneOf from "./one-of.js";
+import oneOf from './one-of.js';
 
-const jsonContentOneOf = <
-  T extends ZodSchema,
->(schemas: T[],
-  description: string,
+const jsonContentOneOf = <T extends ZodSchema>(
+  schemas: T[],
+  description: string
 ) => {
   return {
     content: {
-      "application/json": {
+      'application/json': {
         schema: {
-          oneOf: oneOf(schemas),
-        },
-      },
+          oneOf: oneOf(schemas)
+        }
+      }
     },
-    description,
+    description
   };
 };
 

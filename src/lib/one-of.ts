@@ -1,12 +1,10 @@
-import type { ZodSchema } from "@/types";
+import type { ZodSchema } from '@/types';
 import {
   OpenApiGeneratorV3,
-  OpenAPIRegistry,
-} from "@asteasolutions/zod-to-openapi";
+  OpenAPIRegistry
+} from '@asteasolutions/zod-to-openapi';
 
-const oneOf = <
-  T extends ZodSchema,
->(schemas: T[]) => {
+const oneOf = <T extends ZodSchema>(schemas: T[]) => {
   const registry = new OpenAPIRegistry();
 
   schemas.forEach((schema, index) => {
@@ -16,7 +14,9 @@ const oneOf = <
   const generator = new OpenApiGeneratorV3(registry.definitions);
   const components = generator.generateComponents();
 
-  return components.components?.schemas ? Object.values(components.components!.schemas!) : [];
+  return components.components?.schemas
+    ? Object.values(components.components!.schemas!)
+    : [];
 };
 
 export default oneOf;

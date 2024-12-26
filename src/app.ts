@@ -5,15 +5,12 @@ import configureOpenApi from './lib/configure-open-api';
 
 const app = createApp();
 
-const routes = [
-  index,
-  user
-];
+const routes = [index, user];
 
 configureOpenApi(app);
 
 routes.forEach((route) => {
-  app.route('/', route)
+  app.route('/', route);
 });
 
 export default app;

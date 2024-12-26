@@ -1,17 +1,13 @@
-import type { ZodSchema } from "@/types";
+import type { ZodSchema } from '@/types';
 
-const jsonContent = <
-  T extends ZodSchema,
->(schema: T,
-  description: string,
-) => {
+const jsonContent = <T extends ZodSchema>(schema: T, description: string) => {
   return {
     content: {
-      "application/json": {
-        schema,
-      },
+      'application/json': {
+        schema
+      }
     },
-    description,
+    description
   };
 };
 

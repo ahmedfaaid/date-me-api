@@ -1,6 +1,6 @@
 import { AppOpenApi } from '@/types';
-import packageJSON from '../../package.json';
 import { apiReference } from '@scalar/hono-api-reference';
+import packageJSON from '../../package.json';
 
 export default function configureOpenApi(app: AppOpenApi) {
   app.doc('/doc', {
@@ -11,7 +11,8 @@ export default function configureOpenApi(app: AppOpenApi) {
     }
   });
 
-  app.get('/reference',
+  app.get(
+    '/reference',
     apiReference({
       theme: 'elysiajs',
       defaultHttpClient: {
@@ -23,4 +24,4 @@ export default function configureOpenApi(app: AppOpenApi) {
       }
     })
   );
-};
+}

@@ -1,4 +1,8 @@
-import { insertUsersSchema, selectUsersSchema, updateUsersSchema } from '@/db/schema';
+import {
+  insertUsersSchema,
+  selectUsersSchema,
+  updateUsersSchema
+} from '@/db/schema';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
@@ -46,18 +50,12 @@ export const getOneUser = createRoute({
     params: IdParamsSchema
   },
   responses: {
-    [HttpStatusCodes.OK]: jsonContent(
-      selectUsersSchema,
-      'The requested user'
-    ),
+    [HttpStatusCodes.OK]: jsonContent(selectUsersSchema, 'The requested user'),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
       createErrorSchema(IdParamsSchema),
       'Invalid id error'
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      notFoundSchema,
-      'User not found'
-    )
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, 'User not found')
   }
 });
 
@@ -70,19 +68,14 @@ export const updateUser = createRoute({
     body: jsonContentRequired(updateUsersSchema, 'The user updates')
   },
   responses: {
-    [HttpStatusCodes.OK]: jsonContent(
-      selectUsersSchema,
-      'The updated user'
-    ),
+    [HttpStatusCodes.OK]: jsonContent(selectUsersSchema, 'The updated user'),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(updateUsersSchema)
-        .or(createErrorSchema(IdParamsSchema)),
+      createErrorSchema(updateUsersSchema).or(
+        createErrorSchema(IdParamsSchema)
+      ),
       'The validation error(s)'
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      notFoundSchema,
-      'User not found'
-    )
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, 'User not found')
   }
 });
 
@@ -101,10 +94,7 @@ export const deleteUser = createRoute({
       createErrorSchema(IdParamsSchema),
       'Invalid id error'
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      notFoundSchema,
-      'User not found'
-    )
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, 'User not found')
   }
 });
 
