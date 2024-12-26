@@ -4,7 +4,6 @@ import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import IdParamsSchema from '@/lib/id-params';
 import jsonContent from '@/lib/json-content';
-import jsonContentOneOf from '@/lib/json-content-one-of';
 import jsonContentRequired from '@/lib/json-content-required';
 import { createRoute, z } from '@hono/zod-openapi';
 
@@ -75,9 +74,9 @@ export const updateUser = createRoute({
       selectUsersSchema,
       'The updated user'
     ),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContentOneOf(
-      [createErrorSchema(updateUsersSchema),
-      (createErrorSchema(IdParamsSchema))],
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(updateUsersSchema)
+        .or(createErrorSchema(IdParamsSchema)),
       'The validation error(s)'
     ),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(
