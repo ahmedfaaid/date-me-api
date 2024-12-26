@@ -186,4 +186,21 @@ describe('users routes', () => {
       expect(json.name).toBe('Dumbledore');
     }
   });
+
+  it('delete /users/{id} validates the id when deleting', async () => {
+    const response = await client.users[':id'].$delete({
+      param: {
+        // @ts-expect-error
+        id: 'invalid'
+      }
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].path[0]).toBe('id');
+      expect(json.error.issues[0].message).toBe(
+        ZOD_ERROR_MESSAGES.EXPECTED_NUMBER
+      );
+    }
+  });
 });
