@@ -203,4 +203,13 @@ describe('users routes', () => {
       );
     }
   });
+
+  it('delete /users/{id} removes a user', async () => {
+    const response = await client.users[':id'].$delete({
+      param: {
+        id
+      }
+    });
+    expect(response.status).toBe(204);
+  });
 });
