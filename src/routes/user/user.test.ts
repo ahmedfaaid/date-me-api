@@ -170,4 +170,20 @@ describe('users routes', () => {
       expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.NO_UPDATES);
     }
   });
+
+  it('patch /users/{id} updates a single property of a user', async () => {
+    const response = await client.users[':id'].$patch({
+      param: {
+        id
+      },
+      json: {
+        name: 'Dumbledore'
+      }
+    });
+    expect(response.status).toBe(200);
+    if (response.status === 200) {
+      const json = await response.json();
+      expect(json.name).toBe('Dumbledore');
+    }
+  });
 });
