@@ -27,6 +27,7 @@ describe('users routes', () => {
   const phone = '0244555555';
   const email = 'albus@hogwarts.com';
   const password = 'brackium_emendo';
+  const id = 1;
 
   it('post /users validates the body when creating a user', async () => {
     const response = await client.users.$post({
@@ -98,6 +99,22 @@ describe('users routes', () => {
     if (response.status === 404) {
       const json = await response.json();
       expect(json.message).toBe(HttpStatusPhrases.NOT_FOUND);
+    }
+  });
+
+  it("get /users/{id} gets a single user", async () => {
+    const response = await client.users[":id"].$get({
+      param: {
+        id,
+      },
+    });
+    expect(response.status).toBe(200);
+    if (response.status === 200) {
+      const json = await response.json();
+      expect(json.name).toBe(name);
+      expect(json.phone).toBe(phone);
+      expect(json.email).toBe(email);
+      expect(json.id).toBe(id);
     }
   });
 });
