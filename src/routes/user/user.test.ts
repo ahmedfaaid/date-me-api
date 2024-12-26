@@ -1,4 +1,4 @@
-import { ZOD_ERROR_MESSAGES } from '@/lib/constants';
+import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants';
 import createApp from '@/lib/create-app';
 import env from '@/lib/env';
 import * as HttpStatusPhrases from '@/lib/http-status-phrases';
@@ -153,6 +153,21 @@ describe('users routes', () => {
       const json = await response.json();
       expect(json.error.issues[0].path[0]).toBe('name');
       expect(json.error.issues[0].code).toBe(ZodIssueCode.too_small);
+    }
+  });
+
+  it('patch /users/{id} validates empty body', async () => {
+    const response = await client.users[':id'].$patch({
+      param: {
+        id
+      },
+      json: {}
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].code).toBe(ZOD_ERROR_CODES.INVALID_UPDATES);
+      expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.NO_UPDATES);
     }
   });
 });
