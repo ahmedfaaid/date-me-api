@@ -5,10 +5,10 @@ import * as HttpStatusPhrases from '@/lib/http-status-phrases';
 import router from '@/routes/user/user.index';
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import { testClient } from 'hono/testing';
-import { execSync } from "node:child_process";
-import fs from "node:fs";
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
 
-if (env.NODE_ENV !== "test") {
+if (env.NODE_ENV !== 'test') {
   throw new Error("NODE_ENV must be 'test'");
 }
 
@@ -35,7 +35,7 @@ describe('users routes', () => {
       json: {
         name,
         phone,
-        email,
+        email
       }
     });
     expect(response.status).toBe(422);
@@ -85,15 +85,17 @@ describe('users routes', () => {
     if (response.status === 422) {
       const json = await response.json();
       expect(json.error.issues[0].path[0]).toBe('id');
-      expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.EXPECTED_NUMBER);
+      expect(json.error.issues[0].message).toBe(
+        ZOD_ERROR_MESSAGES.EXPECTED_NUMBER
+      );
     }
   });
 
-  it("get /users/{id} returns 404 when user not found", async () => {
-    const response = await client.users[":id"].$get({
+  it('get /users/{id} returns 404 when user not found', async () => {
+    const response = await client.users[':id'].$get({
       param: {
-        id: 999,
-      },
+        id: 999
+      }
     });
     expect(response.status).toBe(404);
     if (response.status === 404) {
@@ -102,11 +104,11 @@ describe('users routes', () => {
     }
   });
 
-  it("get /users/{id} gets a single user", async () => {
-    const response = await client.users[":id"].$get({
+  it('get /users/{id} gets a single user', async () => {
+    const response = await client.users[':id'].$get({
       param: {
-        id,
-      },
+        id
+      }
     });
     expect(response.status).toBe(200);
     if (response.status === 200) {
@@ -118,19 +120,21 @@ describe('users routes', () => {
     }
   });
 
-  it("patch /users/{id} validates the id param", async () => {
-    const response = await client.users[":id"].$patch({
+  it('patch /users/{id} validates the id param', async () => {
+    const response = await client.users[':id'].$patch({
       param: {
         // @ts-expect-error
-        id: "invalid",
+        id: 'invalid'
       },
-      json: {},
+      json: {}
     });
     expect(response.status).toBe(422);
     if (response.status === 422) {
       const json = await response.json();
-      expect(json.error.issues[0].path[0]).toBe("id");
-      expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.EXPECTED_NUMBER);
+      expect(json.error.issues[0].path[0]).toBe('id');
+      expect(json.error.issues[0].message).toBe(
+        ZOD_ERROR_MESSAGES.EXPECTED_NUMBER
+      );
     }
   });
 });
