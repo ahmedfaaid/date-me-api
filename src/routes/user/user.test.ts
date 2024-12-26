@@ -1,6 +1,7 @@
 import { ZOD_ERROR_MESSAGES } from '@/lib/constants';
 import createApp from '@/lib/create-app';
 import env from '@/lib/env';
+import * as HttpStatusPhrases from '@/lib/http-status-phrases';
 import router from '@/routes/user/user.index';
 import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import { testClient } from 'hono/testing';
@@ -84,6 +85,19 @@ describe('users routes', () => {
       const json = await response.json();
       expect(json.error.issues[0].path[0]).toBe('id');
       expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.EXPECTED_NUMBER);
+    }
+  });
+
+  it("get /users/{id} returns 404 when user not found", async () => {
+    const response = await client.users[":id"].$get({
+      param: {
+        id: 999,
+      },
+    });
+    expect(response.status).toBe(404);
+    if (response.status === 404) {
+      const json = await response.json();
+      expect(json.message).toBe(HttpStatusPhrases.NOT_FOUND);
     }
   });
 });
