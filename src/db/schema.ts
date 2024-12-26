@@ -28,7 +28,11 @@ export const insertUsersSchema = createInsertSchema(users, {
   createdAt: true,
   updatedAt: true
 });
-export const updateUsersSchema = createUpdateSchema(users).omit({
+export const updateUsersSchema = createUpdateSchema(users, {
+  name: (schema) => schema.min(2),
+  email: (schema) => schema.email(),
+  phone: (schema) => schema.refine(validator.isMobilePhone)
+}).omit({
   id: true,
   email: true,
   createdAt: true,
