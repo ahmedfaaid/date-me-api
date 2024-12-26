@@ -7,6 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'bun:test';
 import { testClient } from 'hono/testing';
 import { execSync } from 'node:child_process';
 import fs from 'node:fs';
+import { ZodIssueCode } from 'zod';
 
 if (env.NODE_ENV !== 'test') {
   throw new Error("NODE_ENV must be 'test'");
@@ -135,6 +136,23 @@ describe('users routes', () => {
       expect(json.error.issues[0].message).toBe(
         ZOD_ERROR_MESSAGES.EXPECTED_NUMBER
       );
+    }
+  });
+
+  it('patch /users/{id} validates the body when updating', async () => {
+    const response = await client.users[':id'].$patch({
+      param: {
+        id
+      },
+      json: {
+        name: ''
+      }
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].path[0]).toBe('name');
+      expect(json.error.issues[0].code).toBe(ZodIssueCode.too_small);
     }
   });
 });
