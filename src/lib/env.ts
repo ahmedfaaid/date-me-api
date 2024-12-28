@@ -14,7 +14,8 @@ const EnvSchema = z
       'silent'
     ]),
     DATABASE_URL: z.string().url(),
-    DATABASE_AUTH_TOKEN: z.string().optional()
+    DATABASE_AUTH_TOKEN: z.string().optional(),
+    JWT_SECRET: z.string()
   })
   .superRefine((input, ctx) => {
     if (input.NODE_ENV === 'production' && !input.DATABASE_AUTH_TOKEN) {
@@ -24,6 +25,16 @@ const EnvSchema = z
         received: 'undefined',
         path: ['DATABASE_AUTH_TOKEN'],
         message: 'In production environment, DATABASE_AUTH_TOKEN is required.'
+      });
+    }
+
+    if (!input.JWT_SECRET) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.invalid_type,
+        expected: 'string',
+        received: 'undefined',
+        path: ['JWT_SECRET'],
+        message: 'JWT secret is required.'
       });
     }
   });
