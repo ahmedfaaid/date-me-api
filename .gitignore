@@ -218,3 +218,6 @@ $RECYCLE.BIN/
 
 # Sqlite database files
 *.db
+
+# Randoms
+creds.md
