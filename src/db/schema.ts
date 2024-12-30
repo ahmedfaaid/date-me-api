@@ -7,6 +7,7 @@ import {
   createUpdateSchema
 } from 'drizzle-zod';
 import validator from 'validator';
+import { z } from 'zod';
 
 const defaultNow = sql`(cast((julianday('now') - 2440587.5)*86400000 as integer))`;
 
@@ -46,4 +47,19 @@ export const updateUsersSchema = createUpdateSchema(users, {
   createdAt: true,
   updatedAt: true,
   password: true
+});
+
+export const loginSchema = createSelectSchema(users).omit({
+  id: true,
+  name: true,
+  phone: true,
+  createdAt: true,
+  updatedAt: true
+});
+
+export const authResponseSchema = z.object({
+  user: createSelectSchema(users).omit({
+    password: env.NODE_ENV === 'production' ? true : undefined
+  }),
+  token: z.string()
 });
