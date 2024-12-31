@@ -80,3 +80,4 @@ export const insertProfileSchema = createInsertSchema(profiles).omit({
   createdAt: true,
   updatedAt: true
 });
+export const selectProfilesSchema = createSelectSchema(profiles);
