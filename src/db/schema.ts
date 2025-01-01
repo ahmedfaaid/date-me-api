@@ -32,7 +32,7 @@ export const profiles = sqliteTable('profiles', {
   name: text('name', { mode: 'text' }).notNull(),
   phone: text('phone', { mode: 'text' }).notNull(),
   bio: text('bio', { mode: 'text' }),
-  birthDate: integer('birth_date', { mode: 'timestamp' }).notNull(),
+  birthDate: integer('birth_date').notNull(),
   locationLat: real('location_lat').notNull(),
   locationLon: real('location_lon').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' })
@@ -75,7 +75,9 @@ export const authResponseSchema = z.object({
   token: z.string()
 });
 
-export const insertProfileSchema = createInsertSchema(profiles).omit({
+export const insertProfileSchema = createInsertSchema(profiles, {
+  birthDate: (schema) => schema.transform((timestamp) => new Date(timestamp))
+}).omit({
   id: true,
   createdAt: true,
   updatedAt: true
