@@ -1,7 +1,11 @@
 import db from '@/db';
-import { NOT_FOUND, OK } from '@/lib/http-status-codes';
+import { profiles as profilesSchema } from '@/db/schema';
+import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
-import { ProfileRoute } from '@/routes/profile/profile.route';
+import {
+  CreateProfileRoute,
+  ProfileRoute
+} from '@/routes/profile/profile.route';
 import { AppRouteHandler } from '@/types';
 
 export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
@@ -10,6 +14,9 @@ export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
   const profile = await db.query.profiles.findFirst({
     where(fields, operators) {
       return operators.eq(fields.userId, userId);
+    },
+    with: {
+      user: true
     }
   });
 
@@ -22,4 +29,13 @@ export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
     );
 
   return c.json(profile, OK);
+};
+
+export const createProfile: AppRouteHandler<CreateProfileRoute> = async (c) => {
+  const profile = c.req.valid('json');
+  const [insertedProfile] = await db
+    .insert(profilesSchema)
+    .values(profile)
+    .returning();
+  return c.json(insertedProfile, CREATED);
 };
