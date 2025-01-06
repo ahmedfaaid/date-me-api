@@ -1,4 +1,4 @@
-import { selectProfilesSchema } from '@/db/schema';
+import { insertProfileSchema, selectProfilesSchema } from '@/db/schema';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
@@ -29,4 +29,24 @@ export const profile = createRoute({
   }
 });
 
+export const createProfile = createRoute({
+  tags: ['profiles'],
+  method: 'post',
+  path: '/profiles',
+  request: {
+    body: jsonContent(insertProfileSchema, 'The profile to create')
+  },
+  responses: {
+    [HttpStatusCodes.CREATED]: jsonContent(
+      selectProfilesSchema,
+      'The created profile'
+    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(insertProfileSchema),
+      'Validation error(s)'
+    )
+  }
+});
+
 export type ProfileRoute = typeof profile;
+export type CreateProfileRoute = typeof createProfile;
