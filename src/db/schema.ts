@@ -1,5 +1,5 @@
 import env from '@/lib/env';
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import {
   createInsertSchema,
@@ -43,6 +43,20 @@ export const profiles = sqliteTable('profiles', {
     .$onUpdate(() => new Date())
     .notNull()
 });
+
+export const userRelations = relations(users, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [users.id],
+    references: [profiles.userId]
+  })
+}));
+
+export const profileRelations = relations(profiles, ({ one }) => ({
+  user: one(users, {
+    fields: [profiles.userId],
+    references: [users.id]
+  })
+}));
 
 export const selectUsersSchema = createSelectSchema(users).omit({
   password: env.NODE_ENV === 'production' ? true : undefined
