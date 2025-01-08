@@ -1,5 +1,5 @@
 import db from '@/db';
-import { users as usersSchema } from '@/db/schema';
+import { users as usersSchema } from '@/db/schema/users';
 import env from '@/lib/env';
 import { CREATED, OK, UNAUTHORIZED } from '@/lib/http-status-codes';
 import { AppRouteHandler } from '@/types';
