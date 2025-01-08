@@ -1,7 +1,11 @@
 import { defaultNow } from '@/lib/timestamp';
 import { relations } from 'drizzle-orm';
 import { integer, real, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema
+} from 'drizzle-zod';
 import { users } from './users';
 
 export const profiles = sqliteTable('profiles', {
@@ -40,3 +44,9 @@ export const insertProfileSchema = createInsertSchema(profiles, {
   updatedAt: true
 });
 export const selectProfilesSchema = createSelectSchema(profiles);
+export const updateProfileSchema = createUpdateSchema(profiles).omit({
+  id: true,
+  userId: true,
+  createdAt: true,
+  updatedAt: true
+});
