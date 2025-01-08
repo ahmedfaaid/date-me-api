@@ -1,4 +1,7 @@
-import { insertProfileSchema, selectProfilesSchema } from '@/db/schema';
+import {
+  insertProfileSchema,
+  selectProfilesSchema
+} from '@/db/schema/profiles';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';

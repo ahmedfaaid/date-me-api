@@ -1,5 +1,5 @@
 import db from '@/db';
-import { profiles as profilesSchema } from '@/db/schema';
+import { profiles as profilesSchema } from '@/db/schema/profiles';
 import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import {
