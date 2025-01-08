@@ -21,7 +21,11 @@ import { password } from 'bun';
 import { eq } from 'drizzle-orm';
 
 export const users: AppRouteHandler<UsersRoute> = async (c) => {
-  const users = await db.query.users.findMany();
+  const users = await db.query.users.findMany({
+    with: {
+      profile: true
+    }
+  });
   return c.json(users);
 };
 
@@ -40,6 +44,9 @@ export const getOneUser: AppRouteHandler<GetOneUserRoute> = async (c) => {
   const user = await db.query.users.findFirst({
     where(fields, operators) {
       return operators.eq(fields.id, id);
+    },
+    with: {
+      profile: true
     }
   });
 
