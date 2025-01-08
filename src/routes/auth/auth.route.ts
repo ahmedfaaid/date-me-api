@@ -1,8 +1,5 @@
-import {
-  authResponseSchema,
-  insertUsersSchema,
-  loginSchema
-} from '@/db/schema';
+import { authResponseSchema, loginSchema } from '@/db/schema/auth';
+import { insertUsersSchema } from '@/db/schema/users';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import jsonContent from '@/lib/json-content';
