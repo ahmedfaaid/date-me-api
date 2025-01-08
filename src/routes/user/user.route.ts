@@ -2,7 +2,7 @@ import {
   insertUsersSchema,
   selectUsersSchema,
   updateUsersSchema
-} from '@/db/schema';
+} from '@/db/schema/users';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';

@@ -1,5 +1,5 @@
 import db from '@/db';
-import { users as usersSchema } from '@/db/schema';
+import { users as usersSchema } from '@/db/schema/users';
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants';
 import {
   CREATED,
