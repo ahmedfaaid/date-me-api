@@ -1,12 +1,20 @@
 import db from '@/db';
 import { profiles as profilesSchema } from '@/db/schema/profiles';
-import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
+import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants';
+import {
+  CREATED,
+  NOT_FOUND,
+  OK,
+  UNPROCESSABLE_ENTITY
+} from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import {
   CreateProfileRoute,
-  ProfileRoute
+  ProfileRoute,
+  UpdateProfileRoute
 } from '@/routes/profile/profile.route';
 import { AppRouteHandler } from '@/types';
+import { eq } from 'drizzle-orm';
 
 export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
   const { userId } = c.req.valid('param');
@@ -38,4 +46,44 @@ export const createProfile: AppRouteHandler<CreateProfileRoute> = async (c) => {
     .values(profile)
     .returning();
   return c.json(insertedProfile, CREATED);
+};
+
+export const updateProfile: AppRouteHandler<UpdateProfileRoute> = async (c) => {
+  const { userId } = c.req.valid('param');
+  const updates = c.req.valid('json');
+
+  if (Object.keys(updates).length === 0) {
+    return c.json(
+      {
+        success: false,
+        error: {
+          issues: [
+            {
+              code: ZOD_ERROR_CODES.INVALID_UPDATES,
+              path: [],
+              message: ZOD_ERROR_MESSAGES.NO_UPDATES
+            }
+          ],
+          name: 'ZodError'
+        }
+      },
+      UNPROCESSABLE_ENTITY
+    );
+  }
+
+  const [profile] = await db
+    .update(profilesSchema)
+    .set(updates)
+    .where(eq(profilesSchema.userId, userId))
+    .returning();
+
+  if (!profile)
+    return c.json(
+      {
+        message: NOT_FOUND_PHRASE
+      },
+      NOT_FOUND
+    );
+
+  return c.json(profile, OK);
 };
