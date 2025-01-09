@@ -180,4 +180,22 @@ describe('profile routes', () => {
       expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.NO_UPDATES);
     }
   });
+
+  it('patch /profiles/{userId} updates a profile', async () => {
+    const response = await client.profiles[':userId'].$patch({
+      param: {
+        userId
+      },
+      json: {
+        bio: 'Headmaster of Hogwarts School of Witchcraft and Wizardry'
+      }
+    });
+    expect(response.status).toBe(200);
+    if (response.status === 200) {
+      const json = await response.json();
+      expect(json.bio).toBe(
+        'Headmaster of Hogwarts School of Witchcraft and Wizardry'
+      );
+    }
+  });
 });
