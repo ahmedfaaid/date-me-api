@@ -56,4 +56,27 @@ describe('profile routes', () => {
       expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.REQUIRED);
     }
   });
+
+  it('post /profiles creates a new profile', async () => {
+    const response = await client.profiles.$post({
+      json: {
+        userId,
+        name,
+        phone,
+        bio,
+        birthDate,
+        locationLat,
+        locationLon
+      }
+    });
+    expect(response.status).toBe(201);
+    if (response.status === 201) {
+      const json = await response.json();
+      expect(json.userId).toBe(userId);
+      expect(json.bio).toBe(bio);
+      expect(json.birthDate).toBe(birthDate);
+      expect(json.locationLat).toBe(locationLat);
+      expect(json.locationLon).toBe(locationLon);
+    }
+  });
 });
