@@ -128,4 +128,22 @@ describe('profile routes', () => {
       expect(json.locationLon).toBe(locationLon);
     }
   });
+
+  it('patch /profiles/userId validates the id param', async () => {
+    const response = await client.profiles[':userId'].$patch({
+      param: {
+        // @ts-expect-error
+        userId: 'invalid'
+      },
+      json: {}
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].path[0]).toBe('userId');
+      expect(json.error.issues[0].message).toBe(
+        ZOD_ERROR_MESSAGES.EXPECTED_NUMBER
+      );
+    }
+  });
 });
