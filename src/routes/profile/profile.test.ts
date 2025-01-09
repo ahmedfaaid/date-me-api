@@ -1,4 +1,4 @@
-import { ZOD_ERROR_MESSAGES } from '@/lib/constants';
+import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants';
 import createApp from '@/lib/create-app';
 import env from '@/lib/env';
 import * as HttpStatusPhrases from '@/lib/http-status-phrases';
@@ -143,6 +143,25 @@ describe('profile routes', () => {
       expect(json.error.issues[0].path[0]).toBe('userId');
       expect(json.error.issues[0].message).toBe(
         ZOD_ERROR_MESSAGES.EXPECTED_NUMBER
+      );
+    }
+  });
+
+  it('patch /profiles/{userId} validates the body when updating a profile', async () => {
+    const response = await client.profiles[':userId'].$patch({
+      param: {
+        userId
+      },
+      json: {
+        name: ''
+      }
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].code).toBe(ZOD_ERROR_CODES.INVALID_UPDATES);
+      expect(json.error.issues[0].message).toBe(
+        ZOD_ERROR_MESSAGES.INVALID_UPDATES
       );
     }
   });
