@@ -71,9 +71,42 @@ export const updateProfile: AppRouteHandler<UpdateProfileRoute> = async (c) => {
     );
   }
 
+  const validatedUpdates = Object.fromEntries(
+    Object.entries(updates).filter(([key, value]) => {
+      if (typeof value === 'string' && !value.trim()) return false;
+      if (
+        ['locationLat', 'locationLon'].includes(key) &&
+        (isNaN(Number(value)) || value === null)
+      )
+        return false;
+      if (key === 'birthDate' && (isNaN(Number(value)) || value === null))
+        return false;
+      return true;
+    })
+  );
+
+  if (Object.keys(validatedUpdates).length === 0) {
+    return c.json(
+      {
+        success: false,
+        error: {
+          issues: [
+            {
+              code: ZOD_ERROR_CODES.INVALID_UPDATES,
+              path: [],
+              message: ZOD_ERROR_MESSAGES.INVALID_UPDATES
+            }
+          ],
+          name: 'ZodError'
+        }
+      },
+      UNPROCESSABLE_ENTITY
+    );
+  }
+
   const [profile] = await db
     .update(profilesSchema)
-    .set(updates)
+    .set(validatedUpdates)
     .where(eq(profilesSchema.userId, userId))
     .returning();
 
