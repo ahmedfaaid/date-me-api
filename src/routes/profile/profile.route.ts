@@ -1,6 +1,7 @@
 import {
   insertProfileSchema,
-  selectProfilesSchema
+  selectProfilesSchema,
+  updateProfileSchema
 } from '@/db/schema/profiles';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
@@ -51,5 +52,32 @@ export const createProfile = createRoute({
   }
 });
 
+export const updateProfile = createRoute({
+  tags: ['profiles'],
+  method: 'patch',
+  path: '/profiles/{userId}',
+  request: {
+    params: UserIdParamsSchema,
+    body: jsonContent(updateProfileSchema, 'The profile updates')
+  },
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(
+      selectProfilesSchema,
+      'The updated profile'
+    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(insertProfileSchema).or(
+        createErrorSchema(UserIdParamsSchema)
+      ),
+      'Validation error(s)'
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      notFoundSchema,
+      'Profile not found'
+    )
+  }
+});
+
 export type ProfileRoute = typeof profile;
 export type CreateProfileRoute = typeof createProfile;
+export type UpdateProfileRoute = typeof updateProfile;
