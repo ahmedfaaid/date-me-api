@@ -8,7 +8,8 @@ export const notFoundSchema = createMessageObjectSchema(
 export const ZOD_ERROR_MESSAGES = {
   REQUIRED: 'Required',
   EXPECTED_NUMBER: 'Expected number, received nan',
-  NO_UPDATES: 'No updates provided'
+  NO_UPDATES: 'No updates provided',
+  INVALID_UPDATES: 'Invalid updates'
 };
 
 export const ZOD_ERROR_CODES = {
