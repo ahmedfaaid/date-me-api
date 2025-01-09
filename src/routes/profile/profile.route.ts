@@ -7,6 +7,7 @@ import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import jsonContent from '@/lib/json-content';
+import jsonContentRequired from '@/lib/json-content-required';
 import UserIdParamsSchema from '@/lib/userId-params';
 import { createRoute } from '@hono/zod-openapi';
 
@@ -58,7 +59,7 @@ export const updateProfile = createRoute({
   path: '/profiles/{userId}',
   request: {
     params: UserIdParamsSchema,
-    body: jsonContent(updateProfileSchema, 'The profile updates')
+    body: jsonContentRequired(updateProfileSchema, 'The profile updates')
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
@@ -66,7 +67,7 @@ export const updateProfile = createRoute({
       'The updated profile'
     ),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(insertProfileSchema).or(
+      createErrorSchema(updateProfileSchema).or(
         createErrorSchema(UserIdParamsSchema)
       ),
       'Validation error(s)'
