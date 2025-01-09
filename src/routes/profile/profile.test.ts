@@ -110,4 +110,22 @@ describe('profile routes', () => {
       expect(json.message).toBe(HttpStatusPhrases.NOT_FOUND);
     }
   });
+
+  it('get /profiles/{userId} gets a profile', async () => {
+    const response = await client.profiles[':userId'].$get({
+      param: {
+        userId
+      }
+    });
+    expect(response.status).toBe(200);
+    if (response.status === 200) {
+      const json = await response.json();
+      expect(json.userId).toBe(userId);
+      expect(json.name).toBe(name);
+      expect(json.bio).toBe(bio);
+      expect(json.birthDate).toBe(birthDate);
+      expect(json.locationLat).toBe(locationLat);
+      expect(json.locationLon).toBe(locationLon);
+    }
+  });
 });
