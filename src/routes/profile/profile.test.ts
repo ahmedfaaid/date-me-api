@@ -81,7 +81,7 @@ describe('profile routes', () => {
     }
   });
 
-  it('get /profile/{userId} validates the id param', async () => {
+  it('get /profiles/{userId} validates the id param', async () => {
     const response = await client.profiles[':userId'].$get({
       param: {
         // @ts-expect-error
