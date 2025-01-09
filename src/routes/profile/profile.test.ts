@@ -165,4 +165,19 @@ describe('profile routes', () => {
       );
     }
   });
+
+  it('patch /profiles/{userId} validates empty body', async () => {
+    const response = await client.profiles[':userId'].$patch({
+      param: {
+        userId
+      },
+      json: {}
+    });
+    expect(response.status).toBe(422);
+    if (response.status === 422) {
+      const json = await response.json();
+      expect(json.error.issues[0].code).toBe(ZOD_ERROR_CODES.INVALID_UPDATES);
+      expect(json.error.issues[0].message).toBe(ZOD_ERROR_MESSAGES.NO_UPDATES);
+    }
+  });
 });
