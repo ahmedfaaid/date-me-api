@@ -1,19 +1,11 @@
 import db from '@/db';
 import { users as usersSchema } from '@/db/schema/users';
-import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants';
-import {
-  CREATED,
-  NO_CONTENT,
-  NOT_FOUND,
-  OK,
-  UNPROCESSABLE_ENTITY
-} from '@/lib/http-status-codes';
+import { CREATED, NO_CONTENT, NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import {
   CreateUserRoute,
   DeleteUserRoute,
   GetOneUserRoute,
-  UpdateUserRoute,
   UsersRoute
 } from '@/routes/user/user.route';
 import { AppRouteHandler } from '@/types';
@@ -49,46 +41,6 @@ export const getOneUser: AppRouteHandler<GetOneUserRoute> = async (c) => {
       profile: true
     }
   });
-
-  if (!user)
-    return c.json(
-      {
-        message: NOT_FOUND_PHRASE
-      },
-      NOT_FOUND
-    );
-
-  return c.json(user, OK);
-};
-
-export const updateUser: AppRouteHandler<UpdateUserRoute> = async (c) => {
-  const { id } = c.req.valid('param');
-  const updates = c.req.valid('json');
-
-  if (Object.keys(updates).length === 0) {
-    return c.json(
-      {
-        success: false,
-        error: {
-          issues: [
-            {
-              code: ZOD_ERROR_CODES.INVALID_UPDATES,
-              path: [],
-              message: ZOD_ERROR_MESSAGES.NO_UPDATES
-            }
-          ],
-          name: 'ZodError'
-        }
-      },
-      UNPROCESSABLE_ENTITY
-    );
-  }
-
-  const [user] = await db
-    .update(usersSchema)
-    .set(updates)
-    .where(eq(usersSchema.id, id))
-    .returning();
 
   if (!user)
     return c.json(
