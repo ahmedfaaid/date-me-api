@@ -1,8 +1,4 @@
-import {
-  insertUsersSchema,
-  selectUsersSchema,
-  updateUsersSchema
-} from '@/db/schema/users';
+import { insertUsersSchema, selectUsersSchema } from '@/db/schema/users';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
@@ -59,26 +55,6 @@ export const getOneUser = createRoute({
   }
 });
 
-export const updateUser = createRoute({
-  tags: ['users'],
-  method: 'patch',
-  path: '/users/{id}',
-  request: {
-    params: IdParamsSchema,
-    body: jsonContentRequired(updateUsersSchema, 'The user updates')
-  },
-  responses: {
-    [HttpStatusCodes.OK]: jsonContent(selectUsersSchema, 'The updated user'),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(updateUsersSchema).or(
-        createErrorSchema(IdParamsSchema)
-      ),
-      'The validation error(s)'
-    ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, 'User not found')
-  }
-});
-
 export const deleteUser = createRoute({
   tags: ['users'],
   method: 'delete',
@@ -101,5 +77,4 @@ export const deleteUser = createRoute({
 export type UsersRoute = typeof users;
 export type CreateUserRoute = typeof createUser;
 export type GetOneUserRoute = typeof getOneUser;
-export type UpdateUserRoute = typeof updateUser;
 export type DeleteUserRoute = typeof deleteUser;
