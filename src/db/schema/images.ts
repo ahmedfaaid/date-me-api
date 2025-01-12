@@ -2,12 +2,13 @@ import { defaultNow } from '@/lib/timestamp';
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createInsertSchema } from 'drizzle-zod';
-import { profiles } from './profiles';
 import { users } from './users';
 
 export const images = sqliteTable('images', {
   id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
-  postedBy: integer('posted_by', { mode: 'number' }).references(() => users.id),
+  postedBy: integer('posted_by', { mode: 'number' })
+    .references(() => users.id)
+    .notNull(),
   filename: text('filename', { mode: 'text' }).notNull(),
   mimetype: text('mimetype', { mode: 'text' }).notNull(),
   path: text('path', { mode: 'text' }).notNull(),
@@ -21,9 +22,9 @@ export const images = sqliteTable('images', {
 });
 
 export const imageRelations = relations(images, ({ one }) => ({
-  postedBy: one(profiles, {
+  postedBy: one(users, {
     fields: [images.postedBy],
-    references: [profiles.id]
+    references: [users.id]
   })
 }));
 
