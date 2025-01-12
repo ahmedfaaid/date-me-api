@@ -6,6 +6,7 @@ import {
   createSelectSchema,
   createUpdateSchema
 } from 'drizzle-zod';
+import { images } from './images';
 import { users } from './users';
 
 export const profiles = sqliteTable('profiles', {
@@ -16,6 +17,9 @@ export const profiles = sqliteTable('profiles', {
     .unique(),
   name: text('name', { mode: 'text' }).notNull(),
   phone: text('phone', { mode: 'text' }).notNull(),
+  profilePictureId: integer('profile_picture_id', {
+    mode: 'number'
+  }).references(() => images.id),
   bio: text('bio', { mode: 'text' }),
   birthDate: integer('birth_date').notNull(),
   locationLat: real('location_lat').notNull(),
@@ -33,6 +37,10 @@ export const profileRelations = relations(profiles, ({ one }) => ({
   user: one(users, {
     fields: [profiles.userId],
     references: [users.id]
+  }),
+  profilePicture: one(images, {
+    fields: [profiles.profilePictureId],
+    references: [images.id]
   })
 }));
 
