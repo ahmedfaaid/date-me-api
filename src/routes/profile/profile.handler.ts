@@ -24,7 +24,8 @@ export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
       return operators.eq(fields.userId, userId);
     },
     with: {
-      user: true
+      user: true,
+      profilePicture: true
     }
   });
 
