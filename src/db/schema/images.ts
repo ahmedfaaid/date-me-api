@@ -29,8 +29,13 @@ export const imageRelations = relations(images, ({ one }) => ({
 }));
 
 export const insertImageSchema = z
-  .instanceof(File)
+  .any()
   .refine(
-    (file) => ['image/png', 'image/jpg', 'image/jpeg'].includes(file.type),
-    { message: 'Invalid image file type' }
+    (file) =>
+      ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(
+        file?.type
+      ),
+    {
+      message: 'Invalid image file type'
+    }
   );
