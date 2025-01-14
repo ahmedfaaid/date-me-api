@@ -1,7 +1,7 @@
 import { defaultNow } from '@/lib/timestamp';
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createInsertSchema } from 'drizzle-zod';
+import { z } from 'zod';
 import { users } from './users';
 
 export const images = sqliteTable('images', {
@@ -28,8 +28,9 @@ export const imageRelations = relations(images, ({ one }) => ({
   })
 }));
 
-export const insertImageSchema = createInsertSchema(images).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true
-});
+export const insertImageSchema = z
+  .instanceof(File)
+  .refine(
+    (file) => ['image/png', 'image/jpg', 'image/jpeg'].includes(file.type),
+    { message: 'Invalid image file type' }
+  );
