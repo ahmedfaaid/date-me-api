@@ -219,5 +219,8 @@ $RECYCLE.BIN/
 # Sqlite database files
 *.db
 
+# Static files
+uploads/
+
 # Randoms
 creds.md
