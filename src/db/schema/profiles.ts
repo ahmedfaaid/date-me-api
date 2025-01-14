@@ -48,6 +48,7 @@ export const insertProfileSchema = createInsertSchema(profiles, {
   birthDate: (schema) => schema.transform((timestamp) => new Date(timestamp))
 }).omit({
   id: true,
+  profilePictureId: true,
   createdAt: true,
   updatedAt: true
 });
