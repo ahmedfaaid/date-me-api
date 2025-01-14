@@ -1,4 +1,4 @@
-function removeExtension(filename: string): string {
+export function removeExtension(filename: string): string {
   const lastDotIndex = filename.lastIndexOf('.');
   if (lastDotIndex === -1) {
     return filename;
