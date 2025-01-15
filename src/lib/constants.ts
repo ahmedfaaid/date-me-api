@@ -9,7 +9,8 @@ export const ZOD_ERROR_MESSAGES = {
   REQUIRED: 'Required',
   EXPECTED_NUMBER: 'Expected number, received nan',
   NO_UPDATES: 'No updates provided',
-  INVALID_UPDATES: 'Invalid updates'
+  INVALID_UPDATES: 'Invalid updates',
+  INVALID_JSON: 'Invalid JSON'
 };
 
 export const ZOD_ERROR_CODES = {
