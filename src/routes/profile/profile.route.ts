@@ -8,8 +8,9 @@ import createErrorSchema from '@/lib/create-error-schema';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import jsonContent from '@/lib/json-content';
 import jsonContentRequired from '@/lib/json-content-required';
+import multipartContent from '@/lib/multipart-content';
 import UserIdParamsSchema from '@/lib/userId-params';
-import { createRoute } from '@hono/zod-openapi';
+import { createRoute, z } from '@hono/zod-openapi';
 
 export const profile = createRoute({
   tags: ['profiles'],
@@ -39,7 +40,22 @@ export const createProfile = createRoute({
   method: 'post',
   path: '/profiles',
   request: {
-    body: jsonContent(insertProfileSchema, 'The profile to create')
+    body: multipartContent(
+      z.object({
+        profile: z
+          .string()
+          .transform((str, ctx): z.infer<typeof insertProfileSchema> => {
+            try {
+              return JSON.parse(str);
+            } catch (error) {
+              ctx.addIssue({ code: 'custom', message: 'Invalid JSON' });
+              return z.NEVER;
+            }
+          }),
+        image: insertImageSchema
+      }),
+      'The profile to create'
+    )
   },
   responses: {
     [HttpStatusCodes.CREATED]: jsonContent(
