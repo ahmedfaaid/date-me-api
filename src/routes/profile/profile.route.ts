@@ -1,3 +1,4 @@
+import { insertImageSchema, selectImageSchema } from '@/db/schema/images';
 import {
   insertProfileSchema,
   selectProfilesSchema,
@@ -59,7 +60,10 @@ export const createProfile = createRoute({
   },
   responses: {
     [HttpStatusCodes.CREATED]: jsonContent(
-      selectProfilesSchema,
+      z.object({
+        ...selectProfilesSchema.shape,
+        profilePicture: selectImageSchema
+      }),
       'The created profile'
     ),
     [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
