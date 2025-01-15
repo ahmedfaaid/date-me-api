@@ -53,7 +53,7 @@ export const createProfile = createRoute({
               return z.NEVER;
             }
           }),
-        image: insertImageSchema
+        image: insertImageSchema.optional()
       }),
       'The profile to create'
     )
