@@ -53,11 +53,20 @@ describe('profile routes', () => {
     });
     expect(response.status).toBe(422);
     if (response.status === 422) {
+      const paths = [
+        'userId',
+        'name',
+        'phone',
+        'bio',
+        'birthDate',
+        'locationLat',
+        'locationLon'
+      ];
       const json = await response.json();
-      expect(json.error.issues[0].path[0]).toBe('profile');
-      expect(json.error.issues[0].message).toBe(
-        ZOD_ERROR_MESSAGES.INVALID_JSON
-      );
+      json.error.issues.forEach((issue) => {
+        expect(issue.message).toBe(ZOD_ERROR_MESSAGES.REQUIRED);
+        expect(paths).toContain(issue.path[1]);
+      });
     }
   });
 
