@@ -45,9 +45,11 @@ describe('profile routes', () => {
 
   it('post /profiles validates the body when creating a profile', async () => {
     const response = await client.profiles.$post({
-      // @ts-expect-error
-      json: {
-        bio
+      form: {
+        // @ts-expect-error
+        profile: {
+          bio
+        }
       }
     });
     expect(response.status).toBe(422);
