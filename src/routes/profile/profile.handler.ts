@@ -1,6 +1,8 @@
 import db from '@/db';
+import { images as imagesSchema } from '@/db/schema/images';
 import { profiles as profilesSchema } from '@/db/schema/profiles';
 import { ZOD_ERROR_CODES, ZOD_ERROR_MESSAGES } from '@/lib/constants';
+import { removeExtension, returnExtension } from '@/lib/functions';
 import {
   CREATED,
   NOT_FOUND,
@@ -9,12 +11,13 @@ import {
 } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import {
-  CreateProfileRoute,
   ProfileRoute,
   UpdateProfileRoute
 } from '@/routes/profile/profile.route';
 import { AppRouteHandler } from '@/types';
+import { file, write } from 'bun';
 import { eq } from 'drizzle-orm';
+import path from 'node:path';
 
 export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
   const { userId } = c.req.valid('param');
@@ -40,13 +43,40 @@ export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
   return c.json(profile, OK);
 };
 
-export const createProfile: AppRouteHandler<CreateProfileRoute> = async (c) => {
-  const profile = c.req.valid('json');
+export const createProfile = async (c: any) => {
+  const { profile, image } = c.req.valid('form');
+  let profilePictureId;
+  let imageResult = null;
+
+  const uploads = path.join(process.cwd(), 'src', 'uploads');
+
+  if (image) {
+    const filename = removeExtension(image.name);
+    const ext = returnExtension(image.name);
+
+    const [insertedImage] = await db
+      .insert(imagesSchema)
+      .values({
+        filename,
+        mimetype: image.type,
+        path: `/uploads/${image.name}`,
+        postedBy: profile.userId
+      })
+      .returning();
+    profilePictureId = insertedImage.id;
+    imageResult = insertedImage;
+    await write(
+      file(`${uploads}/${filename}-${profilePictureId}.${ext}`),
+      image
+    );
+  }
+
   const [insertedProfile] = await db
     .insert(profilesSchema)
-    .values(profile)
+    .values({ ...profile, profilePictureId })
     .returning();
-  return c.json(insertedProfile, CREATED);
+
+  return c.json({ ...insertedProfile, profilePicture: imageResult }, CREATED);
 };
 
 export const updateProfile: AppRouteHandler<UpdateProfileRoute> = async (c) => {
