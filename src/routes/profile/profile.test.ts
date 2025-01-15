@@ -64,14 +64,16 @@ describe('profile routes', () => {
 
   it('post /profiles creates a new profile', async () => {
     const response = await client.profiles.$post({
-      json: {
-        userId,
-        name,
-        phone,
-        bio,
-        birthDate,
-        locationLat,
-        locationLon
+      form: {
+        profile: JSON.stringify({
+          userId,
+          name,
+          phone,
+          bio,
+          birthDate,
+          locationLat,
+          locationLon
+        })
       }
     });
     expect(response.status).toBe(201);
