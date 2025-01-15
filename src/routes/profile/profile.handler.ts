@@ -11,6 +11,7 @@ import {
 } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import {
+  CreateProfileRoute,
   ProfileRoute,
   UpdateProfileRoute
 } from '@/routes/profile/profile.route';
@@ -46,7 +47,9 @@ export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
   return c.json(profile, OK);
 };
 
-export const createProfile = async (c: any) => {
+export const createProfile: AppRouteHandler<CreateProfileRoute> = async (
+  c: any
+) => {
   const { profile, image } = c.req.valid('form');
   let profilePictureId;
   let imageResult = null;
@@ -69,7 +72,7 @@ export const createProfile = async (c: any) => {
     profilePictureId = insertedImage.id;
     imageResult = insertedImage;
     await write(
-      file(`${uploads}/${filename}-${profilePictureId}.${ext}`),
+      file(`${uploads}/images/${filename}-${profilePictureId}.${ext}`),
       image
     );
   }
