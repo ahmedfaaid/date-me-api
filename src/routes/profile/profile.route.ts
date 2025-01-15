@@ -43,16 +43,10 @@ export const createProfile = createRoute({
   request: {
     body: multipartContent(
       z.object({
-        profile: z
-          .string()
-          .transform((str, ctx): z.infer<typeof insertProfileSchema> => {
-            try {
-              return JSON.parse(str);
-            } catch (error) {
-              ctx.addIssue({ code: 'custom', message: 'Invalid JSON' });
-              return z.NEVER;
-            }
-          }),
+        profile: z.preprocess(
+          (val) => JSON.parse(val as string),
+          insertProfileSchema
+        ),
         image: insertImageSchema.optional()
       }),
       'The profile to create'
