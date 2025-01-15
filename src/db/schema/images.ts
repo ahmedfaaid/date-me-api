@@ -1,6 +1,7 @@
 import { defaultNow } from '@/lib/timestamp';
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { createSelectSchema } from 'drizzle-zod';
 import { z } from 'zod';
 import { users } from './users';
 
@@ -39,3 +40,4 @@ export const insertImageSchema = z
       message: 'Invalid image file type'
     }
   );
+export const selectImageSchema = createSelectSchema(images);
