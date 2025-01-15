@@ -65,7 +65,7 @@ export const createProfile: AppRouteHandler<CreateProfileRoute> = async (
       .values({
         filename,
         mimetype: image.type,
-        path: `/uploads/${image.name}`,
+        path: `/uploads/images/${image.name}`,
         postedBy: profile.userId
       })
       .returning();
