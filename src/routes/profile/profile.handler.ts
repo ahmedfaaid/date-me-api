@@ -24,12 +24,7 @@ export const profile: AppRouteHandler<ProfileRoute> = async (c) => {
   const { userId } = c.req.valid('param');
 
   const profile = await db.query.profiles.findFirst({
-    where(
-      fields: { userId: number },
-      operators: { eq: (field: any, value: any) => any }
-    ) {
-      return operators.eq(fields.userId, userId);
-    },
+    where: eq(profilesSchema.userId, userId),
     with: {
       user: true,
       profilePicture: true
