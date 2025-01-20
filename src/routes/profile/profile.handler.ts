@@ -66,10 +66,7 @@ export const createProfile: AppRouteHandler<CreateProfileRoute> = async (
       .returning();
     profilePictureId = insertedImage.id;
     imageResult = insertedImage;
-    await write(
-      file(`${uploads}/images/${filename}-${profilePictureId}.${ext}`),
-      image
-    );
+    await write(file(`${uploads}/images/${filename}.${ext}`), image);
   }
 
   const [insertedProfile] = await db
