@@ -35,3 +35,5 @@ export const addProfilePicture = createRoute({
     )
   }
 });
+
+export type AddProfilePictureRoute = typeof addProfilePicture;
