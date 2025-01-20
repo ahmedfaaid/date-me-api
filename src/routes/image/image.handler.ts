@@ -4,11 +4,15 @@ import { profiles as profilesSchema } from '@/db/schema/profiles';
 import { removeExtension, returnExtension } from '@/lib/functions';
 import { NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
+import { AppRouteHandler } from '@/types';
 import { file, write } from 'bun';
 import { eq } from 'drizzle-orm';
 import path from 'node:path';
+import { AddProfilePictureRoute } from './image.route';
 
-export const addProfilePicture = async (c: any) => {
+export const addProfilePicture: AppRouteHandler<
+  AddProfilePictureRoute
+> = async (c) => {
   const { profileId } = c.req.valid('param');
   const { image } = c.req.valid('form');
 
