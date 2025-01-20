@@ -36,4 +36,27 @@ export const addProfilePicture = createRoute({
   }
 });
 
+export const deleteProfilePicture = createRoute({
+  tags: ['images'],
+  method: 'delete',
+  path: '/images/profile/{profileId}',
+  request: {
+    params: ProfileIdParamsSchema
+  },
+  responses: {
+    [HttpStatusCodes.NO_CONTENT]: {
+      description: 'Profile picture deleted successfully'
+    },
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(ProfileIdParamsSchema),
+      'Invalid id error'
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(
+      notFoundSchema,
+      'Profile not found'
+    )
+  }
+});
+
 export type AddProfilePictureRoute = typeof addProfilePicture;
+export type DeleteProfilePictureRoute = typeof deleteProfilePicture;
