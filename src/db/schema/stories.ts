@@ -1,7 +1,8 @@
 import { defaultNow } from '@/lib/timestamp';
 import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
+import { createSelectSchema } from 'drizzle-zod';
+import { z } from 'zod';
 import { users } from './users';
 
 export const stories = sqliteTable('stories', {
@@ -22,7 +23,21 @@ export const storiesRelations = relations(stories, ({ one }) => ({
 }));
 
 export const selectStoriesSchema = createSelectSchema(stories);
-export const insertStoriesSchema = createInsertSchema(stories).omit({
-  id: true,
-  createdAt: true
-});
+export const insertStoriesSchema = z
+  .any()
+  .refine(
+    (file) =>
+      [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+        'video/mp4',
+        'video/quicktime',
+        'video/webm',
+        'video/3gpp'
+      ].includes(file?.type),
+    {
+      message: 'Invalid image/video file type'
+    }
+  );
