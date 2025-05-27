@@ -1,6 +1,7 @@
 import * as auth from '@/db/schema/auth';
 import * as images from '@/db/schema/images';
 import * as profiles from '@/db/schema/profiles';
+import * as stories from '@/db/schema/stories';
 import * as users from '@/db/schema/users';
 import env from '@/lib/env';
 import { createClient } from '@libsql/client';
@@ -12,7 +13,7 @@ const client = createClient({
 });
 
 const db = drizzle(client, {
-  schema: { ...users, ...profiles, ...auth, ...images }
+  schema: { ...users, ...profiles, ...auth, ...images, ...stories }
 });
 
 export default db;
