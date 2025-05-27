@@ -4,6 +4,7 @@ import { relations } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
 import { profiles } from './profiles';
+import { stories } from './stories';
 
 export const users = sqliteTable('users', {
   id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
@@ -18,11 +19,12 @@ export const users = sqliteTable('users', {
     .notNull()
 });
 
-export const userRelations = relations(users, ({ one }) => ({
+export const userRelations = relations(users, ({ one, many }) => ({
   profile: one(profiles, {
     fields: [users.id],
     references: [profiles.userId]
-  })
+  }),
+  stories: many(stories)
 }));
 
 export const selectUsersSchema = createSelectSchema(users).omit({
