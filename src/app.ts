@@ -3,12 +3,13 @@ import auth from '@/routes/auth/auth.index';
 import image from '@/routes/image/image.index';
 import index from '@/routes/index.route';
 import profile from '@/routes/profile/profile.index';
+import story from '@/routes/story/story.index';
 import user from '@/routes/user/user.index';
 import configureOpenApi from './lib/configure-open-api';
 
 const app = createApp();
 
-const routes = [index, user, auth, profile, image];
+const routes = [index, user, auth, profile, image, story];
 
 configureOpenApi(app);
 
