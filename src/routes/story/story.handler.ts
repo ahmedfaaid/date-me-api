@@ -7,10 +7,10 @@ import {
 } from '@/lib/functions';
 import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
-import { defaultNow } from '@/lib/timestamp';
+import { twentyFourHoursAgo } from '@/lib/timestamp';
 import { AppRouteHandler } from '@/types';
 import { file, write } from 'bun';
-import { and, eq, lte } from 'drizzle-orm';
+import { and, eq, gte } from 'drizzle-orm';
 import path from 'node:path';
 import { AddStoryRoute, UserStoriesRoute } from './story.route';
 
@@ -20,7 +20,7 @@ export const userStories: AppRouteHandler<UserStoriesRoute> = async (c) => {
   const stories = await db.query.stories.findMany({
     where: and(
       eq(storiesSchema.userId, userId),
-      lte(storiesSchema.createdAt, defaultNow)
+      gte(storiesSchema.createdAt, twentyFourHoursAgo)
     )
   });
 
