@@ -5,14 +5,18 @@ import {
   returnExtension,
   secondsToMilliseconds
 } from '@/lib/functions';
-import { CREATED, NOT_FOUND, OK } from '@/lib/http-status-codes';
+import { CREATED, NO_CONTENT, NOT_FOUND, OK } from '@/lib/http-status-codes';
 import { NOT_FOUND as NOT_FOUND_PHRASE } from '@/lib/http-status-phrases';
 import { twentyFourHoursAgo } from '@/lib/timestamp';
 import { AppRouteHandler } from '@/types';
 import { file, write } from 'bun';
 import { and, eq, gte } from 'drizzle-orm';
 import path from 'node:path';
-import { AddStoryRoute, UserStoriesRoute } from './story.route';
+import {
+  AddStoryRoute,
+  DeleteStoryRoute,
+  UserStoriesRoute
+} from './story.route';
 
 export const userStories: AppRouteHandler<UserStoriesRoute> = async (c) => {
   const { userId } = c.req.valid('param');
@@ -58,4 +62,32 @@ export const addStory: AppRouteHandler<AddStoryRoute> = async (c) => {
   await write(file(`${uploads}/stories/${fileName}.${ext}`), story);
 
   return c.json(insertedStory, CREATED);
+};
+
+export const deleteStory: AppRouteHandler<DeleteStoryRoute> = async (c) => {
+  const { userId, storyId } = c.req.valid('param');
+
+  const story = await db.query.stories.findFirst({
+    where: and(eq(storiesSchema.id, storyId), eq(storiesSchema.userId, userId))
+  });
+
+  if (!story) return c.json({ message: NOT_FOUND_PHRASE }, NOT_FOUND);
+
+  await file(path.join(process.cwd(), 'src', story.filePath)).delete();
+
+  const result = await db
+    .delete(storiesSchema)
+    .where(
+      and(eq(storiesSchema.id, storyId), eq(storiesSchema.userId, userId))
+    );
+
+  if (result.rowsAffected === 0)
+    return c.json(
+      {
+        message: NOT_FOUND_PHRASE
+      },
+      NOT_FOUND
+    );
+
+  return c.body(null, NO_CONTENT);
 };
