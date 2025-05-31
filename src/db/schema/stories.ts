@@ -27,17 +27,10 @@ export const insertStoriesSchema = z
   .any()
   .refine(
     (file) =>
-      [
-        'image/jpeg',
-        'image/jpg',
-        'image/png',
-        'image/webp',
-        'video/mp4',
-        'video/quicktime',
-        'video/webm',
-        'video/3gpp'
-      ].includes(file?.type),
+      ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(
+        file?.type
+      ),
     {
-      message: 'Invalid image/video file type'
+      message: 'Invalid story file type'
     }
   );
