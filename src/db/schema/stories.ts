@@ -9,6 +9,7 @@ export const stories = sqliteTable('stories', {
   id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
   fileName: text('file_name', { mode: 'text' }).notNull(),
   filePath: text('file_path', { mode: 'text' }).notNull(),
+  playTime: integer('play_time', { mode: 'number' }).notNull(),
   userId: integer('user_id', { mode: 'number' })
     .references(() => users.id)
     .notNull()
