@@ -13,3 +13,7 @@ export function returnExtension(filename: string): string {
   }
   return filename.substring(lastDotIndex + 1);
 }
+
+export function secondsToMilliseconds(seconds: number): number {
+  return seconds * 1000;
+}
