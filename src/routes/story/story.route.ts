@@ -1,6 +1,7 @@
 import { insertStoriesSchema, selectStoriesSchema } from '@/db/schema/stories';
 import { notFoundSchema } from '@/lib/constants';
 import createErrorSchema from '@/lib/create-error-schema';
+import DeleteStoryParamsSchema from '@/lib/delete-story-params';
 import * as HttpStatusCodes from '@/lib/http-status-codes';
 import jsonContent from '@/lib/json-content';
 import multipartContent from '@/lib/multipart-content';
@@ -56,5 +57,25 @@ export const addStory = createRoute({
   }
 });
 
+export const deleteStory = createRoute({
+  tags: ['stories'],
+  method: 'delete',
+  path: '/stories/{userId}/{storyId}',
+  request: {
+    params: DeleteStoryParamsSchema
+  },
+  responses: {
+    [HttpStatusCodes.NO_CONTENT]: {
+      description: 'Story deleted successfully'
+    },
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
+      createErrorSchema(DeleteStoryParamsSchema),
+      'Invalid user id or story id error'
+    ),
+    [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, 'Story not found')
+  }
+});
+
 export type UserStoriesRoute = typeof userStories;
 export type AddStoryRoute = typeof addStory;
+export type DeleteStoryRoute = typeof deleteStory;
