@@ -4,6 +4,7 @@ import * as routes from '@/routes/story/story.route';
 
 const router = createRouter()
   .openapi(routes.userStories, handlers.userStories)
-  .openapi(routes.addStory, handlers.addStory);
+  .openapi(routes.addStory, handlers.addStory)
+  .openapi(routes.deleteStory, handlers.deleteStory);
 
 export default router;
